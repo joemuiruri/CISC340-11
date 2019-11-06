@@ -1,0 +1,31 @@
+/* 
+	Team 11
+	CISC 340
+	SQL Database set up of our database that is used to store our clients passwords
+*/
+/* 
+	Create Dabase 
+*/
+CREATE OR REPLACE TABLE password_storage (
+	id MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	clientname VARCHAR(1000),
+	clientpassword VARCHAR(1000)
+);
+/* 
+	Test Data for Database:
+		- update mysql.(DatabaName) set password=password('team11') where user='[DatabaName]';
+*/
+UPDATE mysql.USER SET Password=PASSWORD('team11') WHERE User='root' AND Host='localhost';
+INSERT INTO password_storage (id,clientname,clientpassword) VALUES (1,'test','test123');
+INSERT INTO password_storage (id,clientname,clientpassword) VALUES (2,'sample','n123');
+/* 
+	localhost set up
+		- Set connection to database 
+*/
+GRANT ALL ON password_storage.* to homepage@localhost IDENTIFIED BY 'team11';
+
+/* 
+
+
+*/
+
