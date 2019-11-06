@@ -34,19 +34,17 @@
     pi@team11: $ sudo chown -R -f www-data:www-data /var/www/html
     
 # Web Server set up (Assuming Raspberry pi is connected to Laptop):
-#   --> add "RewriteEngine on" then save and exit file.
+#  add "RewriteEngine on" onto new file then save and exit.
   1. Network/Web root
     pi@team11: $ sudo nano /var/www/html/.htaccess 
     
 # Connect to our Raspbery Pi using PUTTY:
-#     password: team11
-    $ ssh pi@team11.local
+#   password: team11
+#   ssh pi@team11.local
   
 # Database set up:
-  1. Follow DatabaseREADME in order:
-    - create database
-    - set up initial data
-    - set up localhost 
+  1. Follow DatabaseReadME in order:
+
   
 # URL for each Web Page: 
 #   Pre-Requirements:
@@ -60,21 +58,21 @@
 #   ssh -> use command below to copy a new file into /var/www/html/CISC340-11
 #       pi@team11 $ cp -R /var/www/html/NEWFILE /var/www/html/CISC340-11/NEWFILE
   Run Commands in this order:
-    1. git push origin master
+    1. git pull
     2. git add NEWFILE
-    3. git - m 'Comment'
+    3. git commit NEWFILE - m 'Comment'
+    4. git push
 # Additional Software
-  1. Use commands below in a CMD to install addons 
-    - sudo apt-get install ufw
-    - sudo systemctl status apache2
-    - sudo apache2ctl configtest 
+  1. sudo apt-get install ufw
+  2. sudo systemctl status apache2
+  3. sudo apache2ctl configtest 
     
 # Raspberry Pi (Power Supply) & Monitor & MICRO HDMI & Keyboard are Connted: 
   1. Add on Software to support wireless devices (keyboard, mouse)
       pi@team11: $ sudo add-apt-repository ppa:daniel.pavel/solaar
       pi@team11: $ sudo apt-get update
       
- # Sources:
+# Sources:
   1. https://downloads.mariadb.org/mariadb/repositories/#distro=Debian&distro_release=sid--sid&mirror=herrbischoff&version=10.4
   2. https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md
   3. https://pimylifeup.com/raspberry-pi-apache/
