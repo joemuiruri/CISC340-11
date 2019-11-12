@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import sys
 import time
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 
 GPIO.setwarnings(False)
 
