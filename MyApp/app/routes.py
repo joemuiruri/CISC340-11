@@ -10,19 +10,21 @@ def testpage():
 def login():
    form = LoginForm()
    if form.validate_on_submit():
-      return redirect(url_for('index'))
+      flash('Login requested for username={}, remember_me={}'.format(form.username.data, form.remember_me.data))
+      return redirect('/home')
+   return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/home')
 def index():
     user = {'username': 'team11'}
     posts = [
         {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
+            'author': {'username': 'team11'},
+            'body': '1234'
         },
         {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
+            'author': {'username': 'team11-encry'},
+            'body': '_X1234X_'
         }
     ]
     return render_template('home.html', title='Home', user=user, posts=posts)
