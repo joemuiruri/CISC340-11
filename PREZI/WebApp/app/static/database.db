@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+	TIMESTAMP DATETIME,  
+	password  NUMERIC
+);
+
+INSERT INTO users (password) VALUES (date('now'), 12345);
+
