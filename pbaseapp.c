@@ -1,4 +1,3 @@
-
 /*
  * main.c
  *
@@ -99,73 +98,21 @@ int main()
 		bcdout = 0x1234; // test display = 1234
 		digin = jbin & 0xF; //jb[3..0]
 		rpiin = (jbin & 0xF0)>>4; //jb[7..4];
-		
-		u32 pswd = 0x00000000;
-		u32 digintemp = 0xFFFFFFFF;
 
-		led = sw;
-
-		if(triggered == 1) {
-			xil_printf("1:");
-		} else {
-			xil_printf("0:");
-		}
-
-		if((int)(XADC_Buf[3]>>4) > 600) {
-			xil_printf("alarm triggered\n");
-			triggered = 1;
-		} else {
-			xil_printf("alarm not triggered\n");
-		}
-
-		if(digin != 0x00000000F && triggered == 1 && digin != 0x00000008) { //if rpi is sending a password and alarm was tripped
-			xil_printf("receiving password\n");
-			pswd = digin << 16;
-			xil_printf("Received %08x\n", digin << 16);
-			jcout = 1;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			digintemp = XGpio_DiscreteRead(&gpio2,1) & 0xF;
-			xil_printf("Received %08x\n", digintemp << 12);
-			jcout = 0;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			pswd = pswd + (digintemp << 12);
-			jcout = 1;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			digintemp = XGpio_DiscreteRead(&gpio2,1) & 0xF;
-			xil_printf("Received %08x\n", digintemp << 8);
-			jcout = 0;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			pswd = pswd + (digintemp << 8);
-			jcout = 1;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			digintemp = XGpio_DiscreteRead(&gpio2,1) & 0xF;
-			xil_printf("Received %08x\n", digintemp << 4);
-			jcout = 0;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			pswd = pswd + (digintemp << 4);
-			jcout = 1;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			digintemp = XGpio_DiscreteRead(&gpio2,1) & 0xF;
-			xil_printf("Received %08x\n", digintemp);
-			jcout = 0;
-			XGpio_DiscreteWrite(&gpio3, 1, jcout);
-			pswd = pswd + digin;
-
-			if(pswd == sw) {
-				xil_printf("correct password passed\n");
-				triggered = 0;
-			} else {
-				xil_printf("incorrect password passed\n");
-			}
-		} else if(digin == 0x00000008) {
-			xil_printf("Alarm reset\n");
+		if(digin == 1) {
 			triggered = 0;
 		}
 
-		XGpio_DiscreteWrite(&gpio, 2, led);
+		if((int)(XADC_Buf[3]>>4) > 1750) {
+			triggered = 1;
+		}
+
+		xil_printf("%d\n", triggered);
+
+		//XGpio_DiscreteWrite(&gpio, 2, led);
 		//XGpio_DiscreteWrite(&gpio4, 1, bcdout);
 		//xil_printf("\rbutton state: %08x\n",btn);
-		xil_printf("\r jbin: %08x, digin: %08x, rpiin: %08x\n",jbin,digin,rpiin);
+		//xil_printf("\r jbin: %08x, digin: %08x, rpiin: %08x\n",jbin,digin,rpiin);
 		/******************end of section*************/
 
 		 /*****************************XADC section**************/
@@ -177,11 +124,11 @@ int main()
 			}
 		}
 
-		for(Index = 0;Index<RX_BUFFER_SIZE;Index++){
+		/*for(Index = 0;Index<RX_BUFFER_SIZE;Index++){
 		//xil_printf("Voltage=%d %s\n",channel[Index],XSysMon_RawToVoltage(XADC_Buf[Index]));
 		    xil_printf("RawData %s %d \n",channel[Index],(int)(XADC_Buf[Index]>>4));
 		}
-		xil_printf("   \n");
+		xil_printf("   \n");*/
 		sleep(1);
 
 		/****************end of section*************/
@@ -189,6 +136,3 @@ int main()
 
 	return 0;
 }
-
-
-
