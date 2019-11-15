@@ -1,0 +1,87 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 11/14/2019 01:59:08 PM
+-- Design Name: 
+-- Module Name: lab8 - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity lab8 is
+PORT( a,b,c,d : UNSIGNED(7 downto 0);
+      n : IN STD_LOGIC_VECTOR(1 downto 0);
+      reset,clk : IN STD_LOGIC;
+      avg : OUT UNSIGNED(7 downto 0)
+      );
+end lab8;
+--max is max of a and b
+
+architecture Behavioral of lab8 is
+
+signal d1       : unsigned(7 downto 0) := (others => '0');
+signal d2       : unsigned(7 downto 0) := (others => '0');
+signal d3       : unsigned(7 downto 0) := (others => '0');
+signal d4       : unsigned(7 downto 0) := (others => '0');
+signal d_out    : unsigned(7 downto 0) := (others => '0');
+signal max :unsigned;
+begin
+ avg <= d_out;
+--process for calcultation of the equation.
+PROCESS(clk,a,b,c,d)
+BEGIN
+--Check Reset
+
+    if(rising_edge(clk)) then
+    --Implement the pipeline stages using a for loop and case statement.
+    --'i' is the stage number here.
+    --The multiplication is done in 3 stages here.
+    --See the output waveform of both the modules and compare them.
+        for i in 0 to 4 loop
+            if (a(i) > b(i)) then
+                case i is
+                when 0 => d1 <= a*d1;
+                when 1 => d2 <= b*d2;
+                when 3 => d3 <= temp2*c;
+                when 4 => d4 <= temp2*c;
+                when others => null;
+            end case;
+            else 
+                        case i is
+                when 0 => d1 <= a*d1;
+                when 1 => d2 <= temp1*b;
+                when 3 => d3 <= temp2*c;
+                when 4 => d4 <= temp2*c;
+                when others => null;
+            end case;
+            end if;
+
+        end loop;
+    end if;
+    
+END PROCESS;
+
+end Behavioral;
