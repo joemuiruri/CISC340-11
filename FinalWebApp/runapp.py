@@ -11,7 +11,7 @@ import os
 import time
 import serial
 import gpout
-from flask import Flask, render_template, request
+from flask import Flask, redirect,url_for, abort, render_template, request
 from jinja2 import Environment, PackageLoader 
 import sqlite3 as sql
 #import RPi.GPIO as GPIO
@@ -37,6 +37,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
    print("print test")
+   gpout.deactivateAlarm()
    return render_template('home.html')
 # Update Database by adding new password
 @app.route('/enternew')
@@ -75,7 +76,11 @@ def list():
    rows = cur.fetchall()
    con.close()
    return render_template("list.html",rows = rows)
-""" @app.route('/result')
+@app.route('/sensortrigger')
+def sensortrigger():
+    render_template("sensortrigger.html")
+    return redirect(url_for("result"))
+@app.route('/result')
 def result():
    ser = serial.Serial(
       port = '/dev/ttyUSB1',
@@ -89,8 +94,10 @@ def result():
    while 1:
       ins = ser.readline()
       processedins = str(ins)[2]
+      print(processedins)
       if(processedins == '1'):
-         return render_template("alarmtrigger.html") """
+         print("triggered")
+         return render_template("alarmtrigger.html")
 # Method to check User Password vs Database password... 
 # If passwords don't match, trigger the alarm  
 @app.route('/login',methods = ['POST','GET'])
@@ -100,7 +107,7 @@ def login():
       #  todayDate = request.form['todayDate']
       password = request.form['password']
       print("password collected")
-      with sql.connect("pidatabase.db") as con: 
+      with sql.connect("pidatabase.db") as con:
          print("DB created")
          cur = con.cursor()
          print("Cursor Created")
@@ -116,84 +123,57 @@ def login():
          print(type(fetched))
          print(type(password))
          print(type(passwd))
-         '''while(i>=1):
-           # print("fetch all works")
-            for z in fetched:
-               print("db check")
-               if passwd == int(z[0]):
-                  print("success")
-                  i=0
-                  cur.close()
-                  return render_template("result.html")
-               else:
-                  print("failure")
-                  i=0
-                  cur.rollback()
-                  cur.close()
-                  return render_template("wrongpassword.html")
-         '''
          if len(fetched) > 0:
             print("success")
             cur.close()
-            return render_template("result.html")
+
+            #render_with_context("sensortrigger.html")
+            return redirect(url_for("sensortrigger"))
          else:
             print("failure")
             #cur.rollback()
             cur.close()
-            return render_template("wrongpassword.html")
+            #return render_template("sensortrigger.html")
+            return redirect(url_for("login"))
+            #return render_template("login.html")
       
          # cur.close()
-         return render_template("login.html")
+         #return render_template("login.html")
 
-      try:
+      
+    #try:
        #  todayDate = request.form['todayDate']
-         password = request.form['password']
-         print("password collected")
-         with sql.connect("pidatabase.db") as con: 
-            print("DB created")
-            cur = con.cursor()
-            print("Cursor Created")
-            cur.execute("SELECT password from userpassword where password = " + password)
-            print("Password: " + password)
-            print("SQL request taken")
-            print("Create temp list to check password")
-            print(cur.fetchall())
-            fetched = cur.fetchall()
-            passwd = int(password)
-            #db_check = cur.fetchone()
-            print(fetched)
-            print(type(fetched))
-            print(type(password))
-            print(type(passwd))
-            '''while(i>=1):
-              # print("fetch all works")
-               for z in fetched:
-                  print("db check")
-                  if passwd == int(z[0]):
-                     print("success")
-                     i=0
-                     cur.close()
-                     return render_template("result.html")
-                  else:
-                     print("failure")
-                     i=0
-                     cur.rollback()
-                     cur.close()
-                     return render_template("wrongpassword.html")
-         '''
-            if passwd in fetched[0]:
-               print("true")
+         #password = request.form['password']
+         #print("password collected")
+        # with sql.connect("pidatabase.db") as con: 
+           # print("DB created")
+           # cur = con.cursor()
+           # print("Cursor Created")
+           # cur.execute("SELECT password from userpassword where password = " + password)
+           # print("Password: " + password)
+           # print("SQL request taken")
+           # print("Create temp list to check password")
+           # print(cur.fetchall())
+           # fetched = cur.fetchall()
+           # passwd = int(password)
+           # #db_check = cur.fetchone()
+           # print(fetched)
+           # print(type(fetched))
+           # print(type(password))
+           # print(type(passwd))
+           # if passwd in fetched[0]:
+           #    print("true")
            # cur.close()
-            return render_template("login.html")
+           # return render_template("login.html")
 
-      except:
+     # except:
         # con.close()
         # print(post_id)
-         print("error")
-         return render_template("wrongpassword.html")
+      #   print("error")
+       #  return render_template("wrongpassword.html")
      # finally:
      #    con.close()
-       #  return render_template("login.html")
+       #  return render_template("login.html"
     else:   
       return render_template("login.html")
 # view sensor data - Used mostly for testing     
@@ -270,6 +250,7 @@ def alarmtrigger():
          if len(fetched) > 0:
             print("success")
             cur.close()
+            gpout.deactivateAlarm()
             return render_template("home.html")
          else:
             print("failure")
@@ -280,55 +261,6 @@ def alarmtrigger():
          # cur.close()
          return render_template("alarmtrigger.html")
 
-      try:
-       #  todayDate = request.form['todayDate']
-         password = request.form['password']
-         print("password collected")
-         with sql.connect("pidatabase.db") as con: 
-            print("DB created")
-            cur = con.cursor()
-            print("Cursor Created")
-            cur.execute("SELECT password from userpassword where password = " + password)
-            print("Password: " + password)
-            print("SQL request taken")
-            print("Create temp list to check password")
-            print(cur.fetchall())
-            fetched = cur.fetchall()
-            passwd = int(password)
-            #db_check = cur.fetchone()
-            print(fetched)
-            print(type(fetched))
-            print(type(password))
-            print(type(passwd))
-            '''while(i>=1):
-              # print("fetch all works")
-               for z in fetched:
-                  print("db check")
-                  if passwd == int(z[0]):
-                     print("success")
-                     i=0
-                     cur.close()
-                     return render_template("result.html")
-                  else:
-                     print("failure")
-                     i=0
-                     cur.rollback()
-                     cur.close()
-                     return render_template("wrongpassword.html")
-         '''
-            if passwd in fetched[0]:
-               print("true")
-           # cur.close()
-            return render_template("home.html")
-
-      except:
-        # con.close()
-        # print(post_id)
-         print("error")
-         return render_template("alarmtrigger.html")
-     # finally:
-     #    con.close()
-       #  return render_template("login.html")
     else:   
       return render_template("alarmtrigger.html")
 # main method to run program
@@ -337,4 +269,4 @@ def alarmtrigger():
 # hostname -I
 # In browser to access site enter: http://piIP:5000/
 if __name__ == '__main__':
-   app.run(host='127.0.0.1',debug = True)
+   app.run(host='192.168.0.133',debug = True)
