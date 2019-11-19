@@ -10,27 +10,27 @@
       <body>
             <ul class="nav nav-pills nav-fill">
                         <li class="nav-item">
-                              <a class="nav-link active" href="/">Home</a>
+                              <a class="nav-link " href="/">Home</a>
                         </li>
                         <li class="nav-item">
                               <a class="nav-link" href="/list">Profile</a>
                         </li>
                         <li class="nav-item">
-                              <a class="nav-link" href="/alarmtrigger">Deactivate</a>
+                              <a class="nav-link active" href="/alarmtrigger">Deactivate</a>
                         </li>
                         <li class="nav-item">
-                              <a class="nav-link disabled" href="/gpiopage" tabindex="-1" aria-disabled="true">Testing</a>
+                              <a class="nav-link" href="/gpiopage" tabindex="-1" aria-disabled="true">Testing</a>
                         </li>
             </ul>
             <div class="jumbotron jumbotron-fluid">
                   <div class="container">
                         <div class="card text-center">
-                              <h1 class="display-4"><center>Enter Password to login</h1>
+                              <h1 class="display-4"><center>TRIGGERED!!</h1>
                               <div class="card-body">
-                                    <h5 class="card-title"><span class="badge badge-warning">WARNING</span></center></h5>
-                                    <p class="card-text">Enter Wrong Password and Alarm will be triggered</p>
+                                    <h5 class="card-title"><span class="badge badge-danger">DANGER</span></center></h5>
+                                    <p class="card-text">Enter Password to deactivate</p>
                               </div>
-                              <form action = "/login" method = "POST">
+                              <form action = "/alarmtrigger" method = "POST">
                                     <input type = "int" name = "password" /></br>
                                     <input type = "submit" value = "submit" /><br>
                               </form>

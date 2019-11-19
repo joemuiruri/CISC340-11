@@ -18,12 +18,12 @@ c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name=
 
 #Check if database is already created... If so, the old instance will be dropped and a new one will be created
 if c.fetchone()[0]==1 : 
-    conn.execute('DROP TABLE userpassword')
-    conn.execute('CREATE TABLE userpassword (id INTEGER PRIMARY KEY AUTOINCREMENT, todayDate CURRENT_TIMESTAMP, password TEXT)')
+    conn.execute('drop table if exists userpassword')
+    conn.execute('CREATE TABLE userpassword (id INTEGER PRIMARY KEY AUTOINCREMENT, password int)')
     c.execute("INSERT INTO userpassword (id,password) VALUES (?,?)",('1','12345') )
     conn.commit()
 else:
-    conn.execute('CREATE TABLE userpassword (id INTEGER PRIMARY KEY AUTOINCREMENT, todayDate DATE,password TEXT)')
+    conn.execute('CREATE TABLE userpassword (id INTEGER PRIMARY KEY AUTOINCREMENT, password int)')
     c.execute("INSERT INTO userpassword (id,password) VALUES (?,?)",('1','12345') )
     conn.commit()
     

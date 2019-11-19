@@ -10,13 +10,13 @@
       <body>
             <ul class="nav nav-pills nav-fill">
                         <li class="nav-item">
-                              <a class="nav-link active" href="/">Home</a>
+                              <a class="nav-link" href="/">Home</a>
                         </li>
                         <li class="nav-item">
                               <a class="nav-link" href="/list">Profile</a>
                         </li>
                         <li class="nav-item">
-                              <a class="nav-link" href="/alarmtrigger">Deactivate</a>
+                              <a class="nav-link active" href="/alarmtrigger">Activate</a>
                         </li>
                         <li class="nav-item">
                               <a class="nav-link disabled" href="/gpiopage" tabindex="-1" aria-disabled="true">Testing</a>
@@ -25,12 +25,13 @@
             <div class="jumbotron jumbotron-fluid">
                   <div class="container">
                         <div class="card text-center">
-                              <h1 class="display-4"><center>Enter Password to login</h1>
+                              <h1 class="display-4"><center>ALARM NOT TRIGGERED</h1>
                               <div class="card-body">
                                     <h5 class="card-title"><span class="badge badge-warning">WARNING</span></center></h5>
-                                    <p class="card-text">Enter Wrong Password and Alarm will be triggered</p>
+                                    <p class="card-text">PLease Enter Password to Activate or 
+                                        use option menu above to go back home!</p>
                               </div>
-                              <form action = "/login" method = "POST">
+                              <form action = "/alarmoff" method = "POST">
                                     <input type = "int" name = "password" /></br>
                                     <input type = "submit" value = "submit" /><br>
                               </form>
