@@ -103,7 +103,7 @@ int main()
 			triggered = 0;
 		}
 
-		if((int)(XADC_Buf[3]>>4) > 1750) {
+		if((int)(XADC_Buf[3]>>4) > 600) {
 			triggered = 1;
 		}
 
